@@ -21,15 +21,14 @@
   ],
   "scripts": {
     "clean": "rm client/map.js client/map.js.map",
-    "build": "npm run clean; node --no-warnings scripts/build-client.js",
-    "test": "mocha",
+    "build": "npm run clean;npm run test; node --no-warnings scripts/build-client.js",
+    "test": "node --test",
     "update-authors": "node scripts/update-authors.cjs"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.27.2",
     "expect.js": "*",
-    "grunt-git-authors": "~3",
-    "mocha": "^11.1.0"
+    "grunt-git-authors": "~3"
   },
   "license": "MIT",
   "repository": {
