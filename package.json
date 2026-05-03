@@ -26,7 +26,7 @@
     "update-authors": "node scripts/update-authors.cjs"
   },
   "devDependencies": {
-    "esbuild": "^0.27.2",
+    "esbuild": "^0.28.0",
     "expect.js": "*",
     "grunt-git-authors": "~3"
   },

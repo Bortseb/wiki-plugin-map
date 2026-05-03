@@ -216,14 +216,14 @@ const emit = ($item, item) => {
     // add locate control
     if (tools?.locate) {
       if (
-        !$("link[href='https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css']")
+        !$("link[href='https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.89.1/dist/L.Control.Locate.min.css']")
           .length
       ) {
         $(
-          '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css">',
+          '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.89.1/dist/L.Control.Locate.min.css">',
         ).appendTo('head')
       }
-      wiki.getScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js', () => {
+      wiki.getScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.89.1/dist/L.Control.Locate.min.js', () => {
         L.control
           .locate({
             position: 'topleft',
