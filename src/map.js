@@ -204,6 +204,97 @@ const emit = ($item, item) => {
       scrollWheelZoom: false,
     })
 
+    /*
+     ** Ctrl + Scroll Zoom UX Enhancement:
+     */
+
+    const mapContainer = map.getContainer()
+
+    const zoomOverlay = document.createElement('div')
+    zoomOverlay.innerText = 'Use Ctrl + Scroll to zoom the map'
+
+    Object.assign(zoomOverlay.style, {
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      color: 'white',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '22px',
+      fontFamily: 'sans-serif',
+      zIndex: '9999', // Ensures it sits above all Leaflet map tiles
+      opacity: '0', // Start hidden
+      transition: 'opacity 0.3s ease',
+      pointerEvents: 'none', // CRITICAL: Allows scroll events to pass through the overlay!
+    })
+
+    mapContainer.appendChild(zoomOverlay)
+
+    let overlayTimeout
+
+    mapContainer.addEventListener('wheel', function (event) {
+      if (event.ctrlKey) {
+        // THE USER IS HOLDING CTRL (Zoom the map)
+        event.preventDefault()
+
+        // Hide the overlay instantly if they press Ctrl
+        zoomOverlay.style.opacity = '0'
+
+        const mouseLatLng = map.mouseEventToLatLng(event)
+        let currentZoom = map.getZoom()
+        let newZoom = event.deltaY < 0 ? currentZoom + 1 : currentZoom - 1
+
+        map.setZoomAround(mouseLatLng, newZoom)
+      } else {
+        // THE USER IS SCROLLING NORMALLY (Show overlay)
+
+        // Make the overlay visible
+        zoomOverlay.style.opacity = '1'
+
+        // Clear any existing timer so it doesn't fade out while they are still scrolling
+        clearTimeout(overlayTimeout)
+
+        // Set a timer to fade it out after 1.5 seconds of inactivity
+        overlayTimeout = setTimeout(() => {
+          zoomOverlay.style.opacity = '0'
+        }, 1500)
+      }
+    })
+
+    // Define a new Leaflet "Fit to Bounds" Control
+    const FitBoundsControl = L.Control.extend({
+      options: {
+        position: 'topleft', // Places it right below the native +/- buttons
+      },
+
+      onAdd: function (map) {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom')
+
+        container.innerHTML =
+          '<a href="#" title="Fit all markers" style="font-size:18px; font-weight:bold; line-height:30px; text-align:center; text-decoration:none; color:black;">⛶</a>'
+
+        container.onclick = function (event) {
+          event.preventDefault()
+          event.stopPropagation()
+
+          const bounds = new L.LatLngBounds(boundary.map(p => [p.lat, p.lon]))
+          map.fitBounds(bounds.pad(0.3))
+        }
+
+        container.ondblclick = function (event) {
+          event.stopPropagation()
+        }
+
+        return container
+      },
+    })
+
+    map.addControl(new FitBoundsControl())
+
     const update = () => {
       wiki.pageHandler.put($item.parents('.page:first'), {
         type: 'edit',
