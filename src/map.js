@@ -205,15 +205,11 @@ const emit = ($item, item) => {
     })
 
     /*
-     ** Ctrl + Scroll Zoom UX Enhancement:
+     ** (Ctrl or ⌘) + Scroll to Zoom map
      */
     const mapContainer = map.getContainer()
     const zoomOverlay = document.createElement('div')
-
-    // Let Leaflet determine if the user is on an Apple ecosystem device
-    const isMac = L.Browser.mac
-    const modifierKey = isMac ? '⌘' : 'Ctrl'
-    zoomOverlay.innerText = `Use ${modifierKey} + Scroll to zoom the map`
+    zoomOverlay.innerText = 'Use (Ctrl or ⌘) + Scroll to zoom the map'
 
     Object.assign(zoomOverlay.style, {
       position: 'absolute',
@@ -239,8 +235,8 @@ const emit = ($item, item) => {
     let overlayTimeout
 
     mapContainer.addEventListener('wheel', function (event) {
+      // Check for Control (Windows/Linux) OR Command (Mac)
       if (event.ctrlKey || event.metaKey) {
-        // Check for Control (Windows/Linux) OR Command (Mac)
         // THE USER IS HOLDING CTRL/⌘ (Zoom the map)
         event.preventDefault()
 
