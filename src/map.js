@@ -209,7 +209,7 @@ const emit = ($item, item) => {
      */
     const mapContainer = map.getContainer()
     const zoomOverlay = document.createElement('div')
-    zoomOverlay.innerText = 'Use (Ctrl or ⌘) + Scroll to zoom the map'
+    zoomOverlay.textContent = 'Use (Ctrl or ⌘) + Scroll\nto zoom the map'
 
     Object.assign(zoomOverlay.style, {
       position: 'absolute',
@@ -222,6 +222,8 @@ const emit = ($item, item) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      textAlign: 'center',
+      whiteSpace: 'pre-line',
       fontSize: '22px',
       fontFamily: 'sans-serif',
       zIndex: '9999', // Ensures it sits above all Leaflet map tiles
