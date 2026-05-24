@@ -266,6 +266,16 @@ const emit = ($item, item) => {
       }
     })
 
+    // Helper function to hide the overlay smoothly
+    function hideZoomOverlay() {
+      zoomOverlay.style.opacity = '0'
+      clearTimeout(overlayTimeout)
+    }
+    map.on('dragstart', hideZoomOverlay)
+    map.on('mousedown', hideZoomOverlay)
+    map.on('zoomstart', hideZoomOverlay)
+    map.on('movestart', hideZoomOverlay)
+
     // Define a new Leaflet "Fit to Bounds" Control
     const FitBoundsControl = L.Control.extend({
       options: {

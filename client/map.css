@@ -22,3 +22,7 @@
 #mapediting{
 	background: #eae8d7;
 }
+
+.leaflet-container:focus {
+    outline: none !important;
+}
